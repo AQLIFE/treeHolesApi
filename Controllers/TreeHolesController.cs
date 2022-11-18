@@ -18,15 +18,17 @@ namespace treeHolesApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<HttpStatusCode> Index()
+        public ActionResult<List<TreeInfo>> Index()
         {
-            return HttpStatusCode.OK;
+            if (dbContext.treeInfos != null)
+                return dbContext.treeInfos.ToList();
+            else throw new Exception("数据库记录为空,或未连接到数据库");
         }
 
         [HttpPost]
         public ActionResult<int> Add(string treeInfo)
         {
-            TreeInfo info = new TreeInfo() 
+            TreeInfo info = new TreeInfo()
             { InfoId = 0, InfoContext = treeInfo, CreateDate = new DateTime() };
 
             dbContext.Entry<TreeInfo>(info).State = EntityState.Added;

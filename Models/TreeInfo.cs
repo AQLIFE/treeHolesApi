@@ -6,7 +6,8 @@ namespace treeHolesApi.Model
     [Table("TreeHolesInfo")]
     public class TreeInfo
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Key,Column("InfoId")]
         public int InfoId { get; set; }
 
         [Column]
