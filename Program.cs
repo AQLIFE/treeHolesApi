@@ -13,9 +13,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers(options =>
     options.Filters.Add<ApplicationFilters>());
 
+string arg = builder.Configuration["ConnectionStrings:MysqlConnection"];
+
 // 添加DbContext 支持
-builder.Services.AddDbContext<TreeDbContext>(options =>options.UseMySQL(
-    builder!.Configuration["MysqlConnection"]));
+builder.Services.AddDbContext<TreeDbContext>(options =>options.UseMySQL(arg));
 
 // 添加跨域支持
 builder.Services.AddCors(config => config.AddDefaultPolicy(policy =>
