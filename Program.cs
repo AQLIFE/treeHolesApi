@@ -15,7 +15,7 @@ builder.Services.AddControllers(options =>
 
 // 添加DbContext 支持
 builder.Services.AddDbContext<TreeDbContext>(options =>options.UseMySQL(
-    builder!.Configuration.GetConnectionString("MysqlConnection")));
+    builder!.Configuration["MysqlConnection"]));
 
 // 添加跨域支持
 builder.Services.AddCors(config => config.AddDefaultPolicy(policy =>
