@@ -10,5 +10,6 @@ namespace treeHolesApi.Services
         public TreeDbContext(DbContextOptions<TreeDbContext> option) : base(option)        {
 
         }
+
     }
 }

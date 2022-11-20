@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 using treeHolesApi.Model;
 using treeHolesApi.Services;
 
@@ -28,7 +27,7 @@ namespace treeHolesApi.Controllers
         [HttpPost]
         public ActionResult<int> Add(string treeInfo)
         {
-            TreeInfo info = new TreeInfo()
+            TreeInfo info = new()
             { InfoId = 0, InfoContext = treeInfo, CreateDate = new DateTime() };
 
             dbContext.Entry<TreeInfo>(info).State = EntityState.Added;
