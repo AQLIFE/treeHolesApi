@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.Headers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
 using treeHolesApi.Model;
 using treeHolesApi.Services;
 
@@ -25,10 +27,9 @@ namespace treeHolesApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<int> Add(string treeInfo)
+        public ActionResult<int> Add([FromBody] string treeInfo)
         {
-            TreeInfo info = new()
-            { InfoId = 0, InfoContext = treeInfo, CreateDate = new DateTime() };
+            TreeInfo info = new(treeInfo);
 
             dbContext.Entry<TreeInfo>(info).State = EntityState.Added;
 
@@ -38,7 +39,7 @@ namespace treeHolesApi.Controllers
         [HttpDelete]
         public ActionResult<int> Delete(int id)
         {
-            TreeInfo ?info = dbContext.Find<TreeInfo>(id);
+            TreeInfo? info = dbContext.Find<TreeInfo>(id);
             if (info != null)
             {
                 dbContext.Entry<TreeInfo>(info).State = EntityState.Deleted;

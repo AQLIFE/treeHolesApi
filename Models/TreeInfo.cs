@@ -14,5 +14,17 @@ namespace treeHolesApi.Model
 
         [Column("InfoCreated")]
         public DateTime? CreateDate { get; set; }
+
+        [Column("InfoState")]
+        public int State { get; set; }
+
+        public TreeInfo() { }
+
+        public TreeInfo(string info) {
+            this.InfoId = 0;
+            this.InfoContext = info;
+            this.CreateDate = DateTime.Now;
+            this.State = 5;
+        }
     }
 }

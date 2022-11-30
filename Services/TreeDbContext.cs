@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using treeHolesApi.Model;
+using treeHolesApi.Models;
 
 namespace treeHolesApi.Services
 {
@@ -7,7 +8,10 @@ namespace treeHolesApi.Services
     {
         public DbSet<TreeInfo>? treeInfos { get; set; }
 
-        public TreeDbContext(DbContextOptions<TreeDbContext> option) : base(option)        {
+        public virtual DbSet<State>? States { get; set; }
+
+        public TreeDbContext(DbContextOptions<TreeDbContext> option) : base(option)
+        {
 
         }
 

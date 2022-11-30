@@ -15,11 +15,9 @@ builder.Services.AddControllers(options =>
 
 string? arg = builder.Configuration["ConnectionStrings:MysqlConnection"];
 
-//var connection = new MySqlConnector(arg,new Version("8.0.29"));
-
 // 添加DbContext 支持
-if(arg != null)
-builder.Services.AddDbContext<TreeDbContext>(options =>options.UseMySQL(arg));
+if (arg != null)
+    builder.Services.AddDbContext<TreeDbContext>(options => options.UseMySQL(arg));
 
 // 添加跨域支持
 builder.Services.AddCors(config => config.AddDefaultPolicy(policy =>
@@ -40,5 +38,5 @@ if (app.Environment.IsDevelopment())
 
 
 app.MapControllerRoute(name: "default", pattern: "{controller=TreeHoles}/{action=Index}/{id?}");
-app.UseCors().UseHttpsRedirection().UseHsts().UseRouting();
+app.UseCors().UseHsts().UseRouting();
 app.Run();
