@@ -3,7 +3,7 @@
 The project depends on:
 
 - Mysql 5.7 or later
-- A database named "treeHoles" and a port 3307. (For specific database content, please visit my Github)
+- A database named "treeHoles" and a port 3307. (项目镜像已发布至 [AQLIFE/TreeholesApi](https://hub.docker.com/repository/docker/aqlife/treeholesapi/general) )
 - The database address needs to be running on LAN 192.168.0.101
 
 The project has the following features:
