@@ -1,0 +1,2 @@
+"launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/treeholes",

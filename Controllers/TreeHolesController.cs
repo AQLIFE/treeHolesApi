@@ -13,23 +13,20 @@ namespace treeHolesApi.Controllers
     {
         private readonly TreeDbContext dbContext;
 
-        public TreeHolesController(TreeDbContext _context)
-        {
-            dbContext = _context;
-        }
+        public TreeHolesController(TreeDbContext _context) => dbContext = _context;
 
         [HttpGet]
         public ActionResult<List<TreeInfo>> Index()
         {
-            if (dbContext.treeInfos != null)
-                return dbContext.treeInfos.ToList();
+            if (dbContext.TreeInfos != null)
+                return dbContext.TreeInfos.ToList();
             else throw new Exception("数据库记录为空,或未连接到数据库");
         }
 
         [HttpPost]
-        public ActionResult<int> Add([FromBody] string treeInfo)
+        public ActionResult<int> Add([FromBody]string treeInfo,MediaCode media)
         {
-            TreeInfo info = new(treeInfo);
+            TreeInfo info = new(treeInfo, media);
 
             dbContext.Entry<TreeInfo>(info).State = EntityState.Added;
 
@@ -45,7 +42,7 @@ namespace treeHolesApi.Controllers
                 dbContext.Entry<TreeInfo>(info).State = EntityState.Deleted;
                 return dbContext.SaveChanges();
             }
-            else return 0;
+            else throw new Exception($"没有{id}对应的数据信息");
         }
     }
 }

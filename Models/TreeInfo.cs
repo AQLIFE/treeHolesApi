@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using treeHolesApi.Services;
 
 namespace treeHolesApi.Model
 {
@@ -25,6 +26,14 @@ namespace treeHolesApi.Model
             this.InfoContext = info;
             this.CreateDate = DateTime.Now;
             this.State = 5;
+        }
+
+        public TreeInfo(String info,MediaCode code)
+        {
+            this.InfoId = 0;
+            this.InfoContext = info;
+            this.CreateDate = DateTime.Now;
+            this.State = (int)code;
         }
     }
 }

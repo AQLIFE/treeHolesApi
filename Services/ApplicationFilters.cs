@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.ComponentModel;
 using treeHolesApi.Model;
+using System.Text.RegularExpressions;
 
 namespace treeHolesApi.Services
 {
@@ -14,14 +15,12 @@ namespace treeHolesApi.Services
         public void OnActionExecuting(ActionExecutingContext executingContext)
         {
             HttpRequest obj = executingContext.HttpContext.Request;
-            Console.WriteLine($"接受请求:[{obj.Method}=>{obj.Path}]");
+            Console.WriteLine($"Request:[{obj.Method}=>{obj.Path}]");
 
-            //foreach(var item in obj.Headers)
-            //{
-            //    Console.WriteLine(item.Key, item.Value.ToString());
-            //}
-            Console.WriteLine(obj.Headers["User-Agent"].ToString());
+            MediaCode mediaCode = UnitCheck(obj.Headers["User-Agent"]);
 
+            var objs = new KeyValuePair<string, object>("media",mediaCode);
+            executingContext.ActionArguments.Add(objs);
         }
 
         /// <summary>
@@ -44,6 +43,7 @@ namespace treeHolesApi.Services
                 // 是否存在异常
                 Exception exception= executedContext.Exception;
                 Console.WriteLine(exception.Message);
+                executedContext.Exception = null;
                 ResultInfo result = new(ResultInfoCode.ERROR, "无效操作", item.Path, null);
                 executedContext.Result = new ObjectResult(result);
             }
@@ -61,6 +61,11 @@ namespace treeHolesApi.Services
             }
         }
 
+        private readonly IHostEnvironment _hostEnvironment;
+
+        public ApplicationFilters(IHostEnvironment hostEnvironment) =>
+            _hostEnvironment = hostEnvironment;
+
         /// <summary>
         /// 遇到错误时执行
         /// </summary>
@@ -68,33 +73,58 @@ namespace treeHolesApi.Services
         public void OnException(ExceptionContext exceptionContext)
         {
             Console.WriteLine(exceptionContext.Exception.Message);
+            if (!_hostEnvironment.IsDevelopment()) return;
+
+            else {
+                ResultInfo obj = new(ResultInfoCode.ERROR, "无效操作", exceptionContext.HttpContext.Request.Path, null);
+                exceptionContext.Result = new ObjectResult(obj); }
         }
 
-
         /// <summary>
-        /// 在操作结果之后执行
+        /// 校验设备类型
         /// </summary>
-        /// <param name="resultExecuted">返回信息上下文</param>
-        //public void OnResultExecuted(ResultExecutedContext resultExecuted)
-        //{
-        //    //ObjectResult result = (ObjectResult)resultExecuted.Result;
+        /// <param name="mediaUa">设备UA代码</param>
+        /// <returns>返回识别后的设备代码（MediaCode）</returns>
+        private static MediaCode UnitCheck(string mediaUa)
+        {
+            string regex = @"WeChat|Android|Windows";
 
-        //    Console.WriteLine($"{resultExecuted.HttpContext.Request.Method}=>{resultExecuted.HttpContext.Request.Path}");
-        //    var obj = resultExecuted.HttpContext.Response.Body;
+            Regex regex1 = new(regex, RegexOptions.RightToLeft);
 
-        //    Console.WriteLine($"[Action-AFTER] {obj}");
-        //}
+            Match li = regex1.Match(mediaUa);
 
-        ///// <summary>
-        ///// 在操作结果之前执行
-        ///// </summary>
-        ///// <param name="resultExecuting">返回信息上下文</param>
-        //public void OnResultExecuting(ResultExecutingContext resultExecuting)
-        //{
-        //    Console.WriteLine($"[Action-BEFORE] {resultExecuting.HttpContext.Response.Body}");
-        //}
+            List<Group> sd = li.Groups.Values.ToList();
+
+            return sd[0].Value switch
+            {
+                "Android" => MediaCode.Android,
+                "Windows" => MediaCode.Pc,
+                "WeChat" => MediaCode.Wx,
+                _ => MediaCode.Other,
+            };
+        }
     }
 
+    /// <summary>
+    /// 设备代码
+    /// </summary>
+    public enum MediaCode
+    {
+        [Description("浏览器")]
+        Web = 1,
+        [Description("微信")]
+        Wx,
+        [Description("安卓")]
+        Android,
+        [Description("电脑")]
+        Pc,
+        [Description("其他")]
+        Other
+    }
+
+    /// <summary>
+    /// 信号代码
+    /// </summary>
     public enum ResultInfoCode
     {
         [Description("有效操作")]
@@ -107,6 +137,9 @@ namespace treeHolesApi.Services
         WARRING
     }
 
+    /// <summary>
+    /// 统一信息返回类
+    /// </summary>
     public class ResultInfo
     {
         public ResultInfoCode Code { get; set; }

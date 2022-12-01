@@ -6,7 +6,7 @@ namespace treeHolesApi.Services
 {
     public class TreeDbContext : DbContext
     {
-        public DbSet<TreeInfo>? treeInfos { get; set; }
+        public DbSet<TreeInfo>? TreeInfos { get; set; }
 
         public virtual DbSet<State>? States { get; set; }
 

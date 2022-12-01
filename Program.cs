@@ -32,11 +32,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHsts();
 }
 
 //app.Map("/", () => "Hello World!Please use the /api path");
 
 
 app.MapControllerRoute(name: "default", pattern: "{controller=TreeHoles}/{action=Index}/{id?}");
-app.UseCors().UseHsts().UseRouting();
+app.UseCors().UseRouting();
 app.Run();
