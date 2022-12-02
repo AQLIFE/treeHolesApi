@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.Map("/", () => "Hello World!Please use the /api path");
+app.Map("/", () => "Hello World!Please use the /api path");
 
 
 app.MapControllerRoute(name: "default", pattern: "{controller=TreeHoles}/{action=Index}/{id?}");

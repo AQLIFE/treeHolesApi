@@ -20,7 +20,7 @@
     "Docker": {
       "commandName": "Docker",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production "
+        "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "publishAllPorts": true
     }
