@@ -32,7 +32,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseHsts();
 }
 
 app.Map("/", () => "Hello World!Please use the /api path");
